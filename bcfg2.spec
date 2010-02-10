@@ -99,8 +99,8 @@ install -d $RPM_BUILD_ROOT%{_sysconfdir}/cron.daily
 install -d $RPM_BUILD_ROOT%{_sysconfdir}/cron.hourly
 install -d $RPM_BUILD_ROOT%{_libdir}/bcfg2
 %{__mv} $RPM_BUILD_ROOT%{_bindir}/bcfg2* $RPM_BUILD_ROOT%{_sbindir}
-install debian/bcfg2.init $RPM_BUILD_ROOT/etc/rc.d/init.d/bcfg2
-install debian/bcfg2-server.init $RPM_BUILD_ROOT/etc/rc.d/init.d/bcfg2-server
+install redhat/scripts/bcfg2.init $RPM_BUILD_ROOT/etc/rc.d/init.d/bcfg2
+install redhat/scripts/bcfg2-server.init $RPM_BUILD_ROOT/etc/rc.d/init.d/bcfg2-server
 install debian/bcfg2.default $RPM_BUILD_ROOT%{_sysconfdir}/default/bcfg2
 install debian/bcfg2-server.default $RPM_BUILD_ROOT%{_sysconfdir}/default/bcfg2-server
 install debian/bcfg2.cron.daily $RPM_BUILD_ROOT%{_sysconfdir}/cron.daily/bcfg2
