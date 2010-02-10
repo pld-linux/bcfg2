@@ -37,7 +37,7 @@ deployment strategies.
 Summary:	Bcfg2 Server
 Group:		Networking/Daemons
 Requires:	bcfg2
-Requires:	python-ssl
+Requires:	python-pyOpenSSL
 
 %description -n bcfg2-server
 Bcfg2 helps system administrators produce a consistent, reproducible,
@@ -99,12 +99,14 @@ install debian/bcfg2.cron.hourly $RPM_BUILD_ROOT%{_sysconfdir}/cron.hourly/bcfg2
 install tools/bcfg2-cron $RPM_BUILD_ROOT%{_libdir}/bcfg2/bcfg2-cron
 
 %clean
-[ "$RPM_BUILD_ROOT" != "/" ] && %{__rm} -rf $RPM_BUILD_ROOT || exit 2
+rm -rf $RPM_BUILD_ROOT
 
 %files -n bcfg2
 %defattr(644,root,root,755)
 %attr(755,root,root) %{_sbindir}/bcfg2
-%{py_sitescriptdir}/Bcfg2/*.py*
+%dir %{py_sitescriptdir}/Bcfg2
+%{py_sitescriptdir}/Bcfg2/*.py[co]
+%{py_sitescriptdir}/Bcfg2/Client
 %{py_sitescriptdir}/Bcfg2/Client/*
 %{_mandir}/man1/*
 %{_mandir}/man5/*
@@ -119,11 +121,8 @@ install tools/bcfg2-cron $RPM_BUILD_ROOT%{_libdir}/bcfg2/bcfg2-cron
 
 %files -n bcfg2-server
 %defattr(644,root,root,755)
-
 %{_initrddir}/bcfg2-server
-
 %{py_sitescriptdir}/Bcfg2/Server
-
 %{_datadir}/bcfg2
 %config(noreplace) %{_sysconfdir}/default/bcfg2-server
 %attr(755,root,root) %{_sbindir}/bcfg2-admin
@@ -133,6 +132,5 @@ install tools/bcfg2-cron $RPM_BUILD_ROOT%{_libdir}/bcfg2/bcfg2-cron
 %attr(755,root,root) %{_sbindir}/bcfg2-repo-validate
 %attr(755,root,root) %{_sbindir}/bcfg2-reports
 %attr(755,root,root) %{_sbindir}/bcfg2-server
-
 %{_mandir}/man8/*.8*
 %dir %{_libdir}/bcfg2
