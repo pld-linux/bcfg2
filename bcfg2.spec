@@ -7,6 +7,13 @@ Group:		Applications/System
 URL:		http://trac.mcs.anl.gov/projects/bcfg2
 Source0:	ftp://ftp.mcs.anl.gov/pub/bcfg/%{name}-%{version}.tar.gz
 # Source0-md5:	6fbf36acc5cc58b2504a25c25cad3921
+BuildRequires:	python-devel
+BuildRequires:	rpm-pythonprov
+BuildRequires:	rpmbuild(macros) >= 1.219
+Requires:	python-modules
+BuildArch:	noarch
+BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
+
 %description
 Bcfg2 helps system administrators produce a consistent, reproducible,
 and verifiable description of their environment, and offers
@@ -37,6 +44,8 @@ deployment strategies.
 Summary:	Bcfg2 Server
 Group:		Networking/Daemons
 Requires:	bcfg2
+Requires:	pydoc
+Requires:	python-lxml
 Requires:	python-pyOpenSSL
 
 %description -n bcfg2-server
@@ -90,8 +99,8 @@ install -d $RPM_BUILD_ROOT%{_sysconfdir}/cron.daily
 install -d $RPM_BUILD_ROOT%{_sysconfdir}/cron.hourly
 install -d $RPM_BUILD_ROOT%{_libdir}/bcfg2
 %{__mv} $RPM_BUILD_ROOT%{_bindir}/bcfg2* $RPM_BUILD_ROOT%{_sbindir}
-install debian/bcfg2.init $RPM_BUILD_ROOT%{_initrddir}/bcfg2
-install debian/bcfg2-server.init $RPM_BUILD_ROOT%{_initrddir}/bcfg2-server
+install debian/bcfg2.init $RPM_BUILD_ROOT/etc/rc.d/init.d/bcfg2
+install debian/bcfg2-server.init $RPM_BUILD_ROOT/etc/rc.d/init.d/bcfg2-server
 install debian/bcfg2.default $RPM_BUILD_ROOT%{_sysconfdir}/default/bcfg2
 install debian/bcfg2-server.default $RPM_BUILD_ROOT%{_sysconfdir}/default/bcfg2-server
 install debian/bcfg2.cron.daily $RPM_BUILD_ROOT%{_sysconfdir}/cron.daily/bcfg2
@@ -101,12 +110,15 @@ install tools/bcfg2-cron $RPM_BUILD_ROOT%{_libdir}/bcfg2/bcfg2-cron
 %clean
 rm -rf $RPM_BUILD_ROOT
 
+%post -n bcfg2-server
+/sbin/chkconfig --add bcfg2-server
+
 %files -n bcfg2
 %defattr(644,root,root,755)
 %attr(755,root,root) %{_sbindir}/bcfg2
 %dir %{py_sitescriptdir}/Bcfg2
 %{py_sitescriptdir}/Bcfg2/*.py[co]
-%{py_sitescriptdir}/Bcfg2/Client
+%dir %{py_sitescriptdir}/Bcfg2/Client
 %{py_sitescriptdir}/Bcfg2/Client/*
 %{_mandir}/man1/*
 %{_mandir}/man5/*
@@ -116,12 +128,9 @@ rm -rf $RPM_BUILD_ROOT
 /etc/cron.daily/bcfg2
 %{_libdir}/bcfg2/bcfg2-cron
 
-%post -n bcfg2-server
-/sbin/chkconfig --add bcfg2-server
-
 %files -n bcfg2-server
 %defattr(644,root,root,755)
-%{_initrddir}/bcfg2-server
+%attr(754,root,root)  /etc/rc.d/init.d/bcfg2-server
 %{py_sitescriptdir}/Bcfg2/Server
 %{_datadir}/bcfg2
 %config(noreplace) %{_sysconfdir}/default/bcfg2-server
