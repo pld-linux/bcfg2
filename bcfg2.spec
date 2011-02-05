@@ -113,7 +113,7 @@ rm -rf $RPM_BUILD_ROOT
 %post -n bcfg2-server
 /sbin/chkconfig --add bcfg2-server
 
-%files -n bcfg2
+%files
 %defattr(644,root,root,755)
 %attr(755,root,root) %{_sbindir}/bcfg2
 %dir %{py_sitescriptdir}/Bcfg2
