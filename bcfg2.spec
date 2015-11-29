@@ -9,7 +9,7 @@ Source0:	ftp://ftp.mcs.anl.gov/pub/bcfg/%{name}-%{version}.tar.gz
 # Source0-md5:	6fbf36acc5cc58b2504a25c25cad3921
 BuildRequires:	python-devel
 BuildRequires:	rpm-pythonprov
-BuildRequires:	rpmbuild(macros) >= 1.219
+BuildRequires:	rpmbuild(macros) >= 1.710
 Requires:	python-modules
 BuildArch:	noarch
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
